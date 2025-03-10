@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install --legacy-peer-deps",
+  "buildCommand": "cd stroop-game-main && npm run build",
+  "devCommand": "cd stroop-game-main && npm run dev",
+  "installCommand": "cd stroop-game-main && npm install --legacy-peer-deps",
   "framework": "nextjs",
   "regions": ["sin1"],
   "public": false,
