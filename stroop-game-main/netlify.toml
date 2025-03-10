@@ -1,6 +1,7 @@
 [build]
-  publish = ".next"
-  command = "npm install --legacy-peer-deps && npm run build"
+  base = "stroop-game-main"
+  publish = "out"
+  command = "npm install --legacy-peer-deps && npm run build && npm run export"
 
 [dev]
   command = "npm run dev"
