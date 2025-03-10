@@ -18,5 +18,8 @@
       }
     ],
     "outputDirectory": ".next",
-    "rootDirectory": "stroop-game-main"
+    "rootDirectory": "stroop-game-main",
+    "projectSettings": {
+        "rootDirectory": "stroop-game-main"
+    }
 }
