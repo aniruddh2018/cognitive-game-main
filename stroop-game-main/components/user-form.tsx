@@ -1,104 +1,133 @@
-"use client"
+"use client"; // If you’re using Next.js 13+ in the app directory and need client-side interactivity
 
-import { useState } from "react"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Brain } from "lucide-react"
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button as UIButton } from "@/components/ui/button"; // Renamed to avoid conflict
+
+import { cn } from "@/lib/utils"; // Make sure this file actually exists
+
+// 1. Define Button styles using CVA
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium \
+   ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 \
+   focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 \
+   [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+);
+
+// 2. Define the Button’s props by combining HTML props & the variant props
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean; // If true, lets us render another component (Slot) instead of a <button>
+}
+
+// 3. Implement the Button component
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    // If `asChild` is true, use Radix Slot so we can pass `Button` props to any underlying element
+    const Comp = asChild ? Slot : "button";
+
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))} // Merge cva classes + custom className
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+
+Button.displayName = "Button";
+
+export { Button, buttonVariants };
 
 interface UserFormProps {
-  onSubmit: (data: { name: string; age: number; education: string }) => void
+  onSubmit: (data: { name: string; age: number; education: string }) => void;
 }
 
-export default function UserForm({ onSubmit }: UserFormProps) {
-  const [name, setName] = useState("")
-  const [age, setAge] = useState("")
-  const [education, setEducation] = useState("")
+const UserForm: React.FC<UserFormProps> = ({ onSubmit }) => {
+  const [name, setName] = useState("");
+  const [age, setAge] = useState<number | "">("");
+  const [education, setEducation] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (name && age && education) {
-      onSubmit({
-        name,
-        age: parseInt(age),
-        education,
-      })
+      onSubmit({ name, age: Number(age), education });
     }
-  }
+  };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-white shadow-xl p-8 border-t-4 border-[#1E3A8A]">
-      <div className="text-center mb-6">
-        <div className="flex justify-center mb-4">
-          <Brain className="w-12 h-12 text-[#6D28D9]" />
-        </div>
-        <h2 className="text-2xl font-bold text-[#1E3A8A]">Welcome to the Challenge</h2>
-        <p className="text-gray-600 mt-2">Please tell us a bit about yourself</p>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          Name
+        </label>
+        <Input
+          id="name"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          className="mt-1 block w-full"
+        />
       </div>
+      <div>
+        <label htmlFor="age" className="block text-sm font-medium text-gray-700">
+          Age
+        </label>
+        <Input
+          id="age"
+          type="number"
+          value={age}
+          onChange={(e) => setAge(e.target.value ? Number(e.target.value) : "")}
+          required
+          className="mt-1 block w-full"
+        />
+      </div>
+      <div>
+        <label htmlFor="education" className="block text-sm font-medium text-gray-700">
+          Education
+        </label>
+        <Input
+          id="education"
+          type="text"
+          value={education}
+          onChange={(e) => setEducation(e.target.value)}
+          required
+          className="mt-1 block w-full"
+        />
+      </div>
+      <UIButton type="submit" variant="default" size="default" className="w-full">
+        Submit
+      </UIButton>
+    </form>
+  );
+};
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-[#1E3A8A] mb-1">
-            Your Name
-          </label>
-          <Input
-            id="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name"
-            required
-            className="w-full border-[#14B8A6] focus:ring-[#6D28D9]"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="age" className="block text-sm font-medium text-[#1E3A8A] mb-1">
-            Age
-          </label>
-          <Input
-            id="age"
-            type="number"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            placeholder="Enter your age"
-            required
-            min="5"
-            max="100"
-            className="w-full border-[#14B8A6] focus:ring-[#6D28D9]"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="education" className="block text-sm font-medium text-[#1E3A8A] mb-1">
-            Education Level
-          </label>
-          <Select value={education} onValueChange={setEducation}>
-            <SelectTrigger className="border-[#14B8A6] focus:ring-[#6D28D9]">
-              <SelectValue placeholder="Select your education level" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="primary">Primary School</SelectItem>
-              <SelectItem value="secondary">Secondary School</SelectItem>
-              <SelectItem value="highschool">High School</SelectItem>
-              <SelectItem value="bachelors">Bachelor's Degree</SelectItem>
-              <SelectItem value="masters">Master's Degree</SelectItem>
-              <SelectItem value="doctorate">Doctorate</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <Button 
-          type="submit"
-          className="w-full bg-[#6D28D9] hover:bg-[#6D28D9]/90 text-lg py-6"
-          disabled={!name || !age || !education}
-        >
-          Begin Challenge Series
-        </Button>
-      </form>
-    </Card>
-  )
-}
-
+export default UserForm;

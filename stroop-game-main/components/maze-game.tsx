@@ -177,6 +177,12 @@ const calculatePathDeviation = (optimalPath: Point[], actualPath: Point[]): numb
   return extraMoves + missedMoves;
 };
 
+// Example of iterating over a Set<string>
+const mySet = new Set<string>(["value1", "value2", "value3"]);
+for (const value of mySet) {
+  console.log(value);
+}
+
 export default function MazeGame({ onComplete }: MazeGameProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [maze, setMaze] = useState(() => {

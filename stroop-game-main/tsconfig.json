@@ -6,7 +6,7 @@
       "esnext"
     ],
     "allowJs": true,
-    "target": "es5",
+    "target": "es2015", // Set target to es2015 or higher
     "skipLibCheck": true,
     "strict": false,
     "noEmit": true,
@@ -20,9 +20,7 @@
     "baseUrl": ".",
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@/*": ["./*"],
-        
-      
+      "@/*": ["./*"]
     },
     "plugins": [
       {
