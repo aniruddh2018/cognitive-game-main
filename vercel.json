@@ -18,5 +18,5 @@
       }
     ],
     "outputDirectory": ".next",
-    "rootDirectory": "cognitive-game-main"
+    "rootDirectory": "stroop-game-main"
   } 
