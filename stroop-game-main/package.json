@@ -4,11 +4,8 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "export": "next export",
     "start": "next start",
-    "dev": "next dev",
-    "lint": "next lint",
-    "vercel-build": "next build"
+    "dev": "next dev"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
