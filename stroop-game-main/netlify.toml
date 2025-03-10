@@ -3,11 +3,6 @@
   publish = "out"
   command = "npm install --legacy-peer-deps && npm run build && npm run export"
 
-[dev]
-  command = "npm run dev"
-  targetPort = 3000
-  port = 8888
-
 [[redirects]]
   from = "/*"
   to = "/index.html"

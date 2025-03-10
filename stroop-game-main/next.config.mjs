@@ -29,7 +29,24 @@ const baseConfig = {
 const finalConfig = mergeConfig(baseConfig, userConfig)
 
 // Export the merged config as default
-export default finalConfig
+export default {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  images: {
+    unoptimized: true,
+  },
+  experimental: {
+    webpackBuildWorker: true,
+    parallelServerBuildTraces: true,
+    parallelServerCompiles: true,
+  },
+  trailingSlash: true,
+  output: 'export',
+}
 
 function mergeConfig(base, overrides) {
   if (!overrides) return base
