@@ -22,15 +22,7 @@ const nextConfig = {
     parallelServerCompiles: true,
   },
   trailingSlash: true,
-  exportPathMap: async function (
-    defaultPathMap,
-    { dev, dir, outDir, distDir, buildId }
-  ) {
-    return {
-      '/': { page: '/' },
-      // Add other pages if needed
-    }
-  },
+  // Remove exportPathMap
 }
 
 mergeConfig(nextConfig, userConfig)
