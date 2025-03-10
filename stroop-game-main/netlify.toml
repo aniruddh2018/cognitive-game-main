@@ -1,5 +1,4 @@
 [build]
-  base = "stroop-game-main"
   publish = ".next"
   command = "npm install --legacy-peer-deps && npm run build"
 
@@ -12,5 +11,4 @@
   from = "/*"
   to = "/index.html"
   status = 200
-
-  force = true  force = true
+  force = true
