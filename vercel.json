@@ -4,7 +4,17 @@
     "devCommand": "npm run dev",
     "installCommand": "npm install",
     "framework": "nextjs",
-    "regions": ["all"],
-    "public": false
+    "regions": ["sin1"],
+    "public": false,
+    "headers": [
+      {
+        "source": "/api/(.*)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=0, s-maxage=60, stale-while-revalidate=600"
+          }
+        ]
+      }
+    ]
   } 
-  
