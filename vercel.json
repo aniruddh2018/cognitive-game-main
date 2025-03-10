@@ -2,7 +2,7 @@
     "version": 2,
     "buildCommand": "npm run build",
     "devCommand": "npm run dev",
-    "installCommand": "npm install",
+    "installCommand": "npm install --legacy-peer-deps",
     "framework": "nextjs",
     "regions": ["sin1"],
     "public": false,
@@ -18,6 +18,5 @@
       }
     ],
     "outputDirectory": ".next",
-    "rootDirectory": "stroop-game-main"
-  }
-  
+    "rootDirectory": "cognitive-game-main"
+  } 
