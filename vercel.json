@@ -16,5 +16,8 @@
           }
         ]
       }
-    ]
-  } 
+    ],
+    "outputDirectory": ".next",
+    "rootDirectory": "stroop-game-main"
+  }
+  
