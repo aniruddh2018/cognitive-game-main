@@ -1,12 +1,15 @@
+// 1. ESM file name: `next.config.mjs`
+// 2. Top-level `await import` works in ESM
+
 let userConfig = {}
 
 try {
-  // If `v0-user-next.config.mjs` exports default, we grab it:
-  const importedUserConfig = await import('./v0-user-next.config.mjs');
-  userConfig = importedUserConfig.default ?? {};
+  // 3. Handle default exports from the user config:
+  const imported = await import('./v0-user-next.config.mjs')
+  userConfig = imported.default ?? {}
 } catch (error) {
-  // If the file doesn't exist or there's some other error, ignore
-  console.info('No user config found or failed to import. Skipping user config.');
+  // If file doesn't exist or there's another error, you can log or ignore
+  console.warn('[Next Config] No user config found or failed to import. Skipping user config.')
 }
 
 /** @type {import('next').NextConfig} */
@@ -20,27 +23,28 @@ const baseConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
-};
+}
 
-const finalConfig = mergeConfig(baseConfig, userConfig);
+// 4. Shallow merge user config into base config:
+const finalConfig = mergeConfig(baseConfig, userConfig)
 
-export default finalConfig;
+// Export the merged config as default
+export default finalConfig
 
 function mergeConfig(base, overrides) {
-  // shallow-merge approach
-  if (!overrides) return base;
+  if (!overrides) return base
 
   for (const key in overrides) {
-    if (
-      base[key] &&
-      typeof base[key] === 'object' &&
-      !Array.isArray(base[key])
-    ) {
-      base[key] = { ...base[key], ...overrides[key] };
+    // If the base key is an object (not array), shallow-merge
+    if (base[key] && typeof base[key] === 'object' && !Array.isArray(base[key])) {
+      base[key] = {
+        ...base[key],
+        ...overrides[key],
+      }
     } else {
-      base[key] = overrides[key];
+      // Otherwise overwrite completely
+      base[key] = overrides[key]
     }
   }
-
-  return base;
+  return base
 }
